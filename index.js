@@ -4,7 +4,7 @@ const path = require('node:path');
 const {Client, Collection, Events, GatewayIntentBits} = require('discord.js');
 const {loadCommands} = require("./utils/load-slashes");
 
-const client = new Client({ intents: intentList });
+const client = new Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]});
 client.commands = new Collection();
 
 const commandFolderPath = path.join(__dirname, "commands");
