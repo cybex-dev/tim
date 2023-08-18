@@ -1,0 +1,2 @@
+# tim
+Tim Discord Bot
