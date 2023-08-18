@@ -13,9 +13,10 @@ commands.forEach(command => {
     client.commands.set(command.data.name, command);
 });
 
-client.on('message', message => {
-    if (message.content === 'Ping') {
-        message.channel.send('Pong!');
+client.once(Events.ClientReady, c => {
+    console.log(`TimBot Ready! Logged in as ${c.user.tag}`);
+});
+
 client.on(Events.InteractionCreate, async interaction => {
     // if (!interaction.isCommand()) return;
     if (!interaction.isChatInputCommand()) return;
@@ -31,6 +32,22 @@ client.on(Events.InteractionCreate, async interaction => {
     }
 });
 
-// login if environment variable DISCORD_TOKEN exists
-if(process.env.DISCORD_TOKEN)
-    client.login(process.env.DISCORD_TOKEN).catch(console.error);
+// Respond to mentions messages
+// client.on(Events.MessageCreate, message => {
+//     if(message.content === "") {
+//         return
+//     }
+//     let segments = message.content.split(" ")
+//     if(segments.length > 1) {
+//         // message content
+//         let m = segments[1]
+//         if (m === 'Ping') {
+//             message.channel.send('Pong!');
+//         }
+//     }
+// });
+
+// login with DISCORD_TOKEN
+client.login(process.env.DISCORD_TOKEN).then((_) => {
+    console.log('Logged in!');
+}).catch(console.error);
