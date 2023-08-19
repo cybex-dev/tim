@@ -3,6 +3,7 @@ const path = require('node:path');
 
 const {Client, Collection, Events, GatewayIntentBits} = require('discord.js');
 const {loadCommands} = require("./utils/load-slashes");
+const {startServer} = require("./utils/server-utils");
 
 const client = new Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers]});
 client.commands = new Collection();
@@ -51,3 +52,7 @@ client.on(Events.InteractionCreate, async interaction => {
 client.login(process.env.DISCORD_TOKEN).then((_) => {
     console.log('Logged in!');
 }).catch(console.error);
+
+// Start server to listen for incoming pings (health checks)
+// https://github.com/MicrosoftDocs/azure-docs/issues/34451#issuecomment-813863203
+startServer(process.env.PORT || 8080);
