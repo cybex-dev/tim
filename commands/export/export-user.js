@@ -1,5 +1,5 @@
 const {SlashCommandBuilder} = require('discord.js');
-const {getGuild, getRoleMembers, getMember} = require("../../utils/guild-utils");
+const {getMember} = require("../../utils/guild-utils");
 const {writeToCSV} = require("../../utils/csv-utils");
 
 module.exports = {
@@ -14,8 +14,14 @@ module.exports = {
         })
     ,
     async execute(interaction) {
-        const member = interaction.options.getMember('tag');
-        if (typeof member === 'undefined') {
+        const tag = interaction.options.getMember('tag');
+        if (typeof tag === 'undefined') {
+            interaction.reply('Member not found.');
+            return;
+        }
+
+        const member = await getMember(interaction.guild, tag.id);
+        if(typeof member === 'undefined') {
             interaction.reply('Member not found.');
             return;
         }
@@ -34,7 +40,7 @@ module.exports = {
 
         const filename = `member-${member.user.tag}.csv`.replace(/ /g, '_')
         writeToCSV(filename, data, headers).then((filePath) => {
-            interaction.reply(`Found ${member.roles.cache.length} roles associated with member '${member.user.displayName}'`);
+            interaction.reply(`Found ${member.roles.cache.size} roles associated with member '${member.user.displayName}'`);
             interaction.channel.send({files: [filePath]})
         }).catch(reason => {
             console.error(reason);

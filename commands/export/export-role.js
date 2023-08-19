@@ -20,10 +20,14 @@ module.exports = {
             return;
         }
 
-        const guild = getGuild(interaction.client, interaction.guildId);
+        const guild = await getGuild(interaction.client, interaction.guildId);
+        if (typeof guild === "undefined") {
+            interaction.reply('Something went wrong...');
+            return;
+        }
 
         // get members with role
-        const roleMembers = getRoleMembers(guild, role.id)
+        const roleMembers = await getRoleMembers(guild, role.id)
         if (typeof roleMembers === 'undefined') {
             interaction.reply('Something went wrong...');
             return;
