@@ -1,0 +1,7 @@
+* 1.0.1
+
+- Updated requests to fetch instead of using caching (at least for now) to avoid caching issues
+
+* 1.0.0
+
+Initial commit
