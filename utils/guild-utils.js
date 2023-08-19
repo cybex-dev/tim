@@ -31,8 +31,48 @@ const getGuild = (client, guildId) => {
     return client.guilds.cache.get(guildId);
 }
 
+/**
+ * Get a member by its tag
+ * @param guild {Guild} Guild to fetch member from
+ * @param tag {String} Tag of the member
+ * @returns {undefined|*}
+ */
+const getMember = (guild, tag) => {
+    if (typeof guild === 'undefined') return undefined;
+    if (typeof tag === 'undefined') return undefined;
+    if (typeof tag !== 'string') return undefined;
+    return guild.members.cache.get(tag);
+}
+
+
+/**
+ * Get a role by its name
+ * @param guild {Guild} Guild to fetch role from
+ * @param id {String} Role
+ * @returns {undefined|*}
+ */
+const getRole = (guild, id) => {
+    if (typeof guild === 'undefined') return undefined;
+    if (typeof name === 'undefined') return undefined;
+    if (typeof name !== 'string') return undefined;
+    return guild.roles.cache.get(id);
+}
+
+/**
+ * Get all roles from a guild
+ * @param guild {Guild} Guild to fetch roles from
+ * @returns {undefined|*}
+ */
+const getAllRoles = (guild) => {
+    if (typeof guild === 'undefined') return undefined;
+    return guild.roles.cache;
+}
+
 module.exports = {
     getRoleMembers,
     getAllMembers,
     getGuild,
+    getMember,
+    getRole,
+    getAllRoles,
 }
