@@ -3,7 +3,7 @@ const path = require('node:path');
 
 const {Client, Collection, Events, GatewayIntentBits} = require('discord.js');
 const {loadCommands} = require("./utils/load-slashes");
-const {startServer} = require("./utils/server-utils");
+const {startServer} = require("./utils/app");
 
 const client = new Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers]});
 client.commands = new Collection();

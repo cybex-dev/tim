@@ -1,16 +1,25 @@
-const net = require('node:net');
+const express = require('express');
+const http = require('http');
 
 const startServer = (port) => {
-    const server = net.createServer((c) => {
-        // 'connection' listener.
-        console.log('client connected');
-        c.on('end', () => {
-            console.log('client disconnected');
-        });
-        c.write('hello\r\n');
-        c.pipe(c);
+    let app = express();
+    app.set('port', port);
+    app.use((req, res, next) => {
+        res.header('Access-Control-Allow-Methods', 'GET');
+        next();
     });
-    server.listen(port)
+    app.get('/health', (req, res) => {
+        const data = {
+            uptime: process.uptime(),
+            message: 'Ok',
+            date: new Date()
+        }
+
+        res.status(200).send(data);
+    });
+
+    let server = http.createServer(app);
+    server.listen(port);
     server.on('error', (err) => {
         console.error(err);
     });
