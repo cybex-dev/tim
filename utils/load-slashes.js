@@ -22,27 +22,23 @@ const readCommand = (filepath) => {
  * @param folder {string} path to folder containing commands i.e. "/path/to/commands"
  * @param onReadTransform {function} optional function to transform command object after reading
  */
-const loadCommands = (folder, onReadTransform = null) => {
+const loadCommands = (folder, onReadTransform = (c) => c) => {
     let commands = [];
     // Grab all the command files from the commands directory you created earlier
     if(!fs.existsSync(folder)) {
         throw new Error(`'${folder}' folder does not exist, or was not found.`)
     }
 
-    fs.readdirSync(folder).forEach(file => {
+    const files = fs.readdirSync(folder, {recursive: true})
+    for (const file of files) {
         const filePath = path.join(folder, file);
         const stat = fs.statSync(filePath);
-        if (stat.isDirectory()) {
-            commands.concat(loadCommands(filePath, onReadTransform))
-        } else {
+        if (stat.isFile() && file.endsWith('.js')) {
             const command = readCommand(filePath)
-            if(typeof onReadTransform === "function") {
-                commands.push(onReadTransform());
-            } else {
-                commands.push(command)
-            }
+            const transform = onReadTransform(command)
+            commands.push(transform)
         }
-    });
+    }
 
     return commands;
 }
