@@ -1,0 +1,5 @@
+{
+  "token": "secret-discord-token-goes-here",
+  "clientId": "app-id-goes-here",
+  "guildId": "guild-or-server-id-goes-here"
+}
